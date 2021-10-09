@@ -14,19 +14,20 @@ public class AnimationAndMovementController : MonoBehaviour
 
     Vector2 currentMovementInput;
     Vector3 currentMovement;
-    Vector3 currentMovementAdj;
     Vector3 currentRunMovement;
+    Vector3 velocity;
     bool isMovementPressed;
     bool isRunPressed;
+    bool isJumpPressed;
+    bool isGrounded;
     float targetAngle;
     private float turnSmoothVelocity;
     public float turnSmoothTime = 0.1f;
 
-
-    public float rotationFactorPerFrame = 1;
     public float runMultiplier = 3.0f;
     public float gravity = -9.81f;
     public Transform cam;
+    public float jumpHeight = 2;
 
     void Awake()
     {
@@ -42,11 +43,18 @@ public class AnimationAndMovementController : MonoBehaviour
         playerInput.CharacterControls.Move.performed += onMovementInput;
         playerInput.CharacterControls.Run.started += onRun;
         playerInput.CharacterControls.Run.canceled += onRun;
+        playerInput.CharacterControls.Jump.started += onJump;
+        playerInput.CharacterControls.Jump.canceled += onJump;
     }
 
     void onRun(InputAction.CallbackContext context)
     {
         isRunPressed = context.ReadValueAsButton();
+    }
+
+    void onJump(InputAction.CallbackContext context)
+    {
+        isJumpPressed = context.ReadValueAsButton();
     }
 
     void onMovementInput (InputAction.CallbackContext context)
@@ -98,36 +106,40 @@ public class AnimationAndMovementController : MonoBehaviour
         transform.rotation = Quaternion.Euler(0f,angle,0f);
     }
 
-    void handleGravity()
-    {
-        if(characterController.isGrounded){
-            float groudedGravity = -0.05f;
-            currentMovement.y = groudedGravity;
-            currentRunMovement.y = groudedGravity;
-        } else{
-            currentRunMovement.y = gravity;
-            currentMovement.y = gravity;
-        }
-    }
-
     // Handling the character movement
     void handleMovement()
     {
         Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
         if(isRunPressed) {
-            characterController.Move(moveDir * currentRunMovement.magnitude * Time.deltaTime * 2);
+            characterController.Move(moveDir.normalized * currentRunMovement.magnitude * Time.deltaTime * 2);
         }
         else{
-            characterController.Move(moveDir * currentMovement.magnitude * Time.deltaTime * 2);
+            characterController.Move(moveDir.normalized * currentMovement.magnitude * Time.deltaTime * 2);
+        }
+    }
+
+    void handleJump()
+    {
+        if(isJumpPressed && isGrounded){
+            velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+        isGrounded = characterController.isGrounded;
+        if(isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2f;
+        }
         handleRotation();
         handleAnimation();
         handleMovement();
+        handleJump();
+        
+        velocity.y += gravity * Time.deltaTime;
+        characterController.Move(velocity * Time.deltaTime);
     }
 
     void OnEnable()

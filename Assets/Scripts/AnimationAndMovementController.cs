@@ -18,6 +18,7 @@ public class AnimationAndMovementController : MonoBehaviour
     Vector3 currentRunMovement;
     bool isMovementPressed;
     bool isRunPressed;
+    float targetAngle;
     private float turnSmoothVelocity;
     public float turnSmoothTime = 0.1f;
 
@@ -92,7 +93,7 @@ public class AnimationAndMovementController : MonoBehaviour
         //     Quaternion targetRotation = Quaternion.LookRotation(positionToLookAt);
         //     transform.rotation = Quaternion.Slerp(currentRotation, targetRotation, rotationFactorPerFrame * Time.deltaTime);
         // }
-        float targetAngle = Mathf.Atan2(currentMovement.x, currentMovement.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+        targetAngle = Mathf.Atan2(currentMovement.x, currentMovement.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
         float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
         transform.rotation = Quaternion.Euler(0f,angle,0f);
     }
@@ -112,13 +113,12 @@ public class AnimationAndMovementController : MonoBehaviour
     // Handling the character movement
     void handleMovement()
     {
-        
-
+        Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
         if(isRunPressed) {
-            characterController.Move(currentRunMovement * Time.deltaTime);
+            characterController.Move(moveDir * currentRunMovement.magnitude * Time.deltaTime * 2);
         }
         else{
-            characterController.Move(currentMovement * Time.deltaTime);
+            characterController.Move(moveDir * currentMovement.magnitude * Time.deltaTime * 2);
         }
     }
 

@@ -257,7 +257,7 @@ GameObject:
   - component: {fileID: 592113852844579127}
   - component: {fileID: 546324313819226341}
   m_Layer: 0
-  m_Name: Third person player 1
+  m_Name: Third person player (legacy)
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

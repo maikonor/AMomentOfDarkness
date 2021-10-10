@@ -151,7 +151,7 @@ public class AnimationAndMovementController : MonoBehaviour
         // use teleporter and time machine
         if(teleporter && isUsePressed)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("3dLevel1");
+            UnityEngine.SceneManagement.SceneManager.LoadScene(1);
         }
     }
 

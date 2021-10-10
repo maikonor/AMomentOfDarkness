@@ -16,10 +16,20 @@ public class AnimationAndMovementController : MonoBehaviour
     Vector3 currentMovement;
     Vector3 currentRunMovement;
     Vector3 velocity;
+
+    // input bools
     bool isMovementPressed;
     bool isRunPressed;
     bool isJumpPressed;
     bool isGrounded;
+    bool isUsePressed;
+
+    // bools for triggers
+    public bool teleportTip = false;
+    private bool teleporter = false;
+    private bool timeMachine = false;
+
+
     float targetAngle;
     private float turnSmoothVelocity;
     public float turnSmoothTime = 0.1f;
@@ -45,11 +55,20 @@ public class AnimationAndMovementController : MonoBehaviour
         playerInput.CharacterControls.Run.canceled += onRun;
         playerInput.CharacterControls.Jump.started += onJump;
         playerInput.CharacterControls.Jump.canceled += onJump;
+        playerInput.CharacterControls.Use.started += onUse;
+        playerInput.CharacterControls.Use.canceled += onUse;
     }
 
+
+    // scripts for initializing inputs and controls
     void onRun(InputAction.CallbackContext context)
     {
         isRunPressed = context.ReadValueAsButton();
+    }
+
+    void onUse(InputAction.CallbackContext context)
+    {
+        isUsePressed = context.ReadValueAsButton();
     }
 
     void onJump(InputAction.CallbackContext context)
@@ -67,6 +86,8 @@ public class AnimationAndMovementController : MonoBehaviour
         isMovementPressed = currentMovementInput.x != 0 || currentMovementInput.y != 0;
     }
 
+
+    // handle functions for movement/animation/mechanics and physics
     void handleAnimation()
     {
         bool isWalking = animator.GetBool(isWalkingHash);
@@ -125,6 +146,15 @@ public class AnimationAndMovementController : MonoBehaviour
         }
     }
 
+    void handleMechanics()
+    {
+        // use teleporter and time machine
+        if(teleporter && isUsePressed)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("3dLevel1");
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -137,9 +167,28 @@ public class AnimationAndMovementController : MonoBehaviour
         handleAnimation();
         handleMovement();
         handleJump();
+        handleMechanics();
         
         velocity.y += gravity * Time.deltaTime;
         characterController.Move(velocity * Time.deltaTime);
+    }
+
+    private void onTriggerEnter(Collider other)
+    {
+        if(other.gameObject.CompareTag("PortalTrigger1"))
+        {
+            teleporter = true;
+            teleportTip = true;
+        }
+    }
+
+    private void onTriggerExit(Collider other)
+    {
+        if(other.gameObject.CompareTag("PortalTrigger1"))
+        {
+            teleporter = false;
+            teleportTip = false;
+        }
     }
 
     void OnEnable()

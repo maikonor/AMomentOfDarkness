@@ -5,7 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Shootable
-  - PortalTrigger1
+  - Portal
   layers:
   - Default
   - TransparentFX

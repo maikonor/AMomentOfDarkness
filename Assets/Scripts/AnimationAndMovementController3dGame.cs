@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using TMPro;
 
 
-public class AnimationAndMovementController : MonoBehaviour
+public class AnimationAndMovementController3dGame : MonoBehaviour
 {
     PlayerInput playerInput;
     CharacterController characterController;
@@ -27,11 +27,6 @@ public class AnimationAndMovementController : MonoBehaviour
     bool isGrounded;
     bool isUsePressed;
 
-    // bools for triggers
-    public bool teleportTip = false;
-    private bool teleporter = false;
-    private bool timeMachine = false;
-
 
     float targetAngle;
     private float turnSmoothVelocity;
@@ -41,7 +36,7 @@ public class AnimationAndMovementController : MonoBehaviour
     public float gravity = -9.81f;
     public Transform cam;
     public float jumpHeight = 2;
-    public GameObject teleportTipText;
+
 
     void Awake()
     {
@@ -152,24 +147,12 @@ public class AnimationAndMovementController : MonoBehaviour
 
     void handleMechanics()
     {
-        // use teleporter and time machine
-        if(teleporter && isUsePressed)
-        {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(1);
-        }
 
     }
 
     void handleUI()
     {
-        if(teleportTip)
-        {
-            teleportTipText.gameObject.SetActive(true);
-        }
-        if(!teleportTip)
-        {
-            teleportTipText.gameObject.SetActive(false);
-        }
+        
     }
     // Update is called once per frame
     void Update()
@@ -188,34 +171,6 @@ public class AnimationAndMovementController : MonoBehaviour
         
         velocity.y += gravity * Time.deltaTime;
         characterController.Move(velocity * Time.deltaTime);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.CompareTag("Portal"))
-        {
-            teleporter = true;
-            teleportTip = true;
-        }
-        if(other.gameObject.CompareTag("TimeMachine"))
-        {
-            teleportTip = true;
-            timeMachine = true;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if(other.gameObject.CompareTag("Portal"))
-        {
-            teleporter = false;
-            teleportTip = false;
-        }
-        if(other.gameObject.CompareTag("TimeMachine"))
-        {
-            teleportTip = false;
-            timeMachine = false;
-        }
     }
 
     void OnEnable()

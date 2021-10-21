@@ -26,12 +26,14 @@ public class AnimationAndMovementController : MonoBehaviour
     bool isJumpPressed;
     bool isGrounded;
     bool isUsePressed;
+    bool isDarknessPressed;
 
     // bools for triggers
     public bool teleportTip = false;
     private bool teleporter = false;
     private bool timeMachine = false;
 
+    private bool isDark = false;
 
     float targetAngle;
     private float turnSmoothVelocity;
@@ -42,6 +44,8 @@ public class AnimationAndMovementController : MonoBehaviour
     public Transform cam;
     public float jumpHeight = 2;
     public GameObject teleportTipText;
+
+    
 
     void Awake()
     {
@@ -61,6 +65,12 @@ public class AnimationAndMovementController : MonoBehaviour
         playerInput.CharacterControls.Jump.canceled += onJump;
         playerInput.CharacterControls.Use.started += onUse;
         playerInput.CharacterControls.Use.canceled += onUse;
+        playerInput.CharacterControls.Darkness.started += onDarkness;
+        playerInput.CharacterControls.Darkness.canceled += onDarkness;
+    }
+    void start()
+    {
+        
     }
 
 
@@ -75,6 +85,10 @@ public class AnimationAndMovementController : MonoBehaviour
         isUsePressed = context.ReadValueAsButton();
     }
 
+    void onDarkness(InputAction.CallbackContext context)
+    {
+        isDarknessPressed = context.ReadValueAsButton();
+    }
     void onJump(InputAction.CallbackContext context)
     {
         isJumpPressed = context.ReadValueAsButton();
@@ -131,7 +145,6 @@ public class AnimationAndMovementController : MonoBehaviour
         transform.rotation = Quaternion.Euler(0f,angle,0f);
     }
 
-    // Handling the character movement
     void handleMovement()
     {
         Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
@@ -150,6 +163,7 @@ public class AnimationAndMovementController : MonoBehaviour
         }
     }
 
+    // our gamespecific mechanics
     void handleMechanics()
     {
         // use teleporter and time machine
@@ -158,8 +172,33 @@ public class AnimationAndMovementController : MonoBehaviour
             UnityEngine.SceneManagement.SceneManager.LoadScene(1);
         }
 
+        // our Darkness™ mechanic XD
+        if(isDarknessPressed && !isDark)
+        {
+            GameObject[] gameObjectArray = GameObject.FindGameObjectsWithTag("Hideable");
+            Debug.Log("become dark");
+            foreach(GameObject go in gameObjectArray)
+            {
+                go.GetComponent<Light>().enabled = false;
+            }
+            RenderSettings.ambientIntensity = 0f;
+            isDark = true;
+        }
+        else if(!isDarknessPressed && isDark)
+        {
+            GameObject[] gameObjectArray = GameObject.FindGameObjectsWithTag("Hideable");
+            Debug.Log("become bright");
+            
+            foreach(GameObject go in gameObjectArray)
+            {
+                go.GetComponent<Light>().enabled = true;
+            }
+            RenderSettings.ambientIntensity = 0.2f;
+            isDark = false;
+        }
     }
 
+    // handle all ui thingies
     void handleUI()
     {
         if(teleportTip)
@@ -171,6 +210,7 @@ public class AnimationAndMovementController : MonoBehaviour
             teleportTipText.gameObject.SetActive(false);
         }
     }
+
     // Update is called once per frame
     void Update()
     {

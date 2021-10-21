@@ -57,6 +57,14 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": ""NormalizeVector2"",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Darkness"",
+                    ""type"": ""Button"",
+                    ""id"": ""c1e551ac-4939-4fdc-bd45-38a26516e1b4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": ""NormalizeVector2"",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -158,6 +166,17 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""action"": ""Use"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fc82965e-24fa-4edb-af28-aa200fdee4ad"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Darkness"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -171,6 +190,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         m_CharacterControls_Mouselook = m_CharacterControls.FindAction("Mouselook", throwIfNotFound: true);
         m_CharacterControls_Jump = m_CharacterControls.FindAction("Jump", throwIfNotFound: true);
         m_CharacterControls_Use = m_CharacterControls.FindAction("Use", throwIfNotFound: true);
+        m_CharacterControls_Darkness = m_CharacterControls.FindAction("Darkness", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -225,6 +245,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     private readonly InputAction m_CharacterControls_Mouselook;
     private readonly InputAction m_CharacterControls_Jump;
     private readonly InputAction m_CharacterControls_Use;
+    private readonly InputAction m_CharacterControls_Darkness;
     public struct CharacterControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -234,6 +255,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         public InputAction @Mouselook => m_Wrapper.m_CharacterControls_Mouselook;
         public InputAction @Jump => m_Wrapper.m_CharacterControls_Jump;
         public InputAction @Use => m_Wrapper.m_CharacterControls_Use;
+        public InputAction @Darkness => m_Wrapper.m_CharacterControls_Darkness;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -258,6 +280,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Use.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnUse;
                 @Use.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnUse;
                 @Use.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnUse;
+                @Darkness.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnDarkness;
+                @Darkness.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnDarkness;
+                @Darkness.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnDarkness;
             }
             m_Wrapper.m_CharacterControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -277,6 +302,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Use.started += instance.OnUse;
                 @Use.performed += instance.OnUse;
                 @Use.canceled += instance.OnUse;
+                @Darkness.started += instance.OnDarkness;
+                @Darkness.performed += instance.OnDarkness;
+                @Darkness.canceled += instance.OnDarkness;
             }
         }
     }
@@ -288,5 +316,6 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         void OnMouselook(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnUse(InputAction.CallbackContext context);
+        void OnDarkness(InputAction.CallbackContext context);
     }
 }

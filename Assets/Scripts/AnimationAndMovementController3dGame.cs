@@ -26,7 +26,12 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
     bool isJumpPressed;
     bool isGrounded;
     bool isUsePressed;
+    bool isDarknessPressed;
 
+    bool isDark;
+
+    public bool teleportTip = false;
+    private bool teleporter = false;
 
     float targetAngle;
     private float turnSmoothVelocity;
@@ -42,6 +47,7 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
     public int gemCount = 0;
     public int darknessTotalTime;
     public TextMeshProUGUI countText;
+    public GameObject teleportTipText;
 
 
 
@@ -64,6 +70,8 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
         playerInput.CharacterControls.Jump.canceled += onJump;
         playerInput.CharacterControls.Use.started += onUse;
         playerInput.CharacterControls.Use.canceled += onUse;
+        playerInput.CharacterControls.Darkness.started += onDarkness;
+        playerInput.CharacterControls.Darkness.canceled += onDarkness;
     }
 
 
@@ -76,6 +84,10 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
     void onUse(InputAction.CallbackContext context)
     {
         isUsePressed = context.ReadValueAsButton();
+    }
+    void onDarkness(InputAction.CallbackContext context)
+    {
+        isDarknessPressed = context.ReadValueAsButton();
     }
 
     void onJump(InputAction.CallbackContext context)
@@ -155,13 +167,50 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
 
     void handleMechanics()
     {
+        // teleport back to the room
+        if(teleporter && isUsePressed)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        }
 
+        // our Darkness™ mechanic XD
+        if(isDarknessPressed && !isDark)
+        {
+            GameObject[] gameObjectArray = GameObject.FindGameObjectsWithTag("Hideable");
+            Debug.Log("become dark");
+            foreach(GameObject go in gameObjectArray)
+            {
+                go.GetComponent<Light>().enabled = false;
+            }
+            RenderSettings.ambientIntensity = 0f;
+            isDark = true;
+        }
+        else if(!isDarknessPressed && isDark)
+        {
+            GameObject[] gameObjectArray = GameObject.FindGameObjectsWithTag("Hideable");
+            Debug.Log("become bright");
+            
+            foreach(GameObject go in gameObjectArray)
+            {
+                go.GetComponent<Light>().enabled = true;
+            }
+            RenderSettings.ambientIntensity = 0.2f;
+            isDark = false;
+        }
     }
 
     void handleUI()
     {
-        
+        if(teleportTip)
+        {
+            teleportTipText.gameObject.SetActive(true);
+        }
+        if(!teleportTip)
+        {
+            teleportTipText.gameObject.SetActive(false);
+        }
     }
+
     // Update is called once per frame
     void Update()
     {
@@ -193,6 +242,11 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if(other.gameObject.CompareTag("Portal"))
+        {
+            teleporter = true;
+            teleportTip = true;
+        }
         if (other.gameObject.CompareTag("GemPickUp")) 
         {
             other.gameObject.SetActive(false);
@@ -200,6 +254,15 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
             countText.gameObject.SetActive(true);
             TimeCalculator();
             SetCountText();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.gameObject.CompareTag("Portal"))
+        {
+            teleporter = false;
+            teleportTip = false;
         }
     }
 

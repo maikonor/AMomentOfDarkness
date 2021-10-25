@@ -35,7 +35,14 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
     public float runMultiplier = 3.0f;
     public float gravity = -9.81f;
     public Transform cam;
-    public float jumpHeight = 2;
+    public float jumpHeight = 1;
+
+    // Gem Collector
+
+    public int gemCount = 0;
+    public int darknessTotalTime;
+    public TextMeshProUGUI countText;
+
 
 
     void Awake()
@@ -43,6 +50,7 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
         playerInput = new PlayerInput();
         characterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+        countText.gameObject.SetActive(false);
 
         isWalkingHash = Animator.StringToHash("isWalking");
         isRunningHash = Animator.StringToHash("isRunning");
@@ -182,4 +190,28 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
     {
         playerInput.CharacterControls.Disable();
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("GemPickUp")) 
+        {
+            other.gameObject.SetActive(false);
+            gemCount++;
+            countText.gameObject.SetActive(true);
+            TimeCalculator();
+            SetCountText();
+        }
+    }
+
+    void TimeCalculator()
+    {
+        darknessTotalTime = 15 * gemCount;
+        darknessTotalTime = darknessTotalTime / 60;
+
+    }
+
+    void SetCountText()
+	{
+		countText.text = "Colected Gems: " + gemCount.ToString() + "\n" + "Collected Darkness time: " + darknessTotalTime.ToString();
+	}
 }

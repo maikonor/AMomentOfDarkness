@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 6399317605725386208}
   - component: {fileID: 6407634763655641922}
   - component: {fileID: 4503763980943655023}
+  - component: {fileID: 3053852523504065778}
   m_Layer: 0
   m_Name: GemPurple
-  m_TagString: Untagged
+  m_TagString: GemPickUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 6394310229744484372}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 22.229296, y: 0.38541675, z: 18.670828}
-  m_LocalScale: {x: 0.65, y: 0.65, z: 0.65}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -94,3 +95,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed4c212774cf49940997d17d293cb94b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &3053852523504065778
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6394310229744484372}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.6, y: 0.77083445, z: 0.99999994}
+  m_Center: {x: 0, y: 0, z: 0}

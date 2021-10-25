@@ -8,11 +8,12 @@ TagManager:
   - Portal
   - TimeMachine
   - Hideable
+  - GemPickUp
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Gem
   - Water
   - UI
   - 

@@ -44,6 +44,10 @@ public class AnimationAndMovementController : MonoBehaviour
     public Transform cam;
     public float jumpHeight = 2;
     public GameObject teleportTipText;
+    
+    public int gems = 0;
+    public float oldTime = 0.00f;
+    public TextMeshProUGUI TimeText;
 
     
 
@@ -67,6 +71,9 @@ public class AnimationAndMovementController : MonoBehaviour
         playerInput.CharacterControls.Use.canceled += onUse;
         playerInput.CharacterControls.Darkness.started += onDarkness;
         playerInput.CharacterControls.Darkness.canceled += onDarkness;
+
+        PlayerPrefs.SetInt("gems collected", 0);
+        PlayerPrefs.Save();
     }
     void start()
     {
@@ -169,7 +176,7 @@ public class AnimationAndMovementController : MonoBehaviour
         // use teleporter and time machine
         if(teleporter && isUsePressed)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+            UnityEngine.SceneManagement.SceneManager.LoadScene("3dLevel1");
         }
 
         // our Darkness™ mechanic XD
@@ -196,6 +203,8 @@ public class AnimationAndMovementController : MonoBehaviour
             RenderSettings.ambientIntensity = 0.2f;
             isDark = false;
         }
+
+        
     }
 
     // handle all ui thingies
@@ -209,11 +218,19 @@ public class AnimationAndMovementController : MonoBehaviour
         {
             teleportTipText.gameObject.SetActive(false);
         }
+
+        // collected time display and update
+        if(oldTime != gems * 15/60)
+        {
+            oldTime = PlayerPrefs.GetFloat("dark time");
+            TimeText.text = "Time collected: " + oldTime.ToString("R") + " minutes";
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        gems = PlayerPrefs.GetInt("gems collected");
         isGrounded = characterController.isGrounded;
         if(isGrounded && velocity.y < 0)
         {
@@ -237,7 +254,10 @@ public class AnimationAndMovementController : MonoBehaviour
             teleporter = true;
             teleportTip = true;
         }
-        if(other.gameObject.CompareTag("TimeMachine"))
+
+        // check gems
+        
+        if(other.gameObject.CompareTag("TimeMachine") && gems != 0)
         {
             teleportTip = true;
             timeMachine = true;

@@ -45,7 +45,7 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
     // Gem Collector
 
     public int gemCount = 0;
-    public int darknessTotalTime;
+    public float darknessTotalTime;
     public TextMeshProUGUI countText;
     public GameObject teleportTipText;
 
@@ -170,7 +170,7 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
         // teleport back to the room
         if(teleporter && isUsePressed)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Main Game");
         }
 
         // our Darkness™ mechanic XD
@@ -254,6 +254,8 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
             countText.gameObject.SetActive(true);
             TimeCalculator();
             SetCountText();
+            PlayerPrefs.SetInt("gems collected", gemCount);
+            PlayerPrefs.Save();
         }
     }
 
@@ -270,6 +272,7 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
     {
         darknessTotalTime = 15 * gemCount;
         darknessTotalTime = darknessTotalTime / 60;
+        PlayerPrefs.SetFloat("dark time", darknessTotalTime);
 
     }
 

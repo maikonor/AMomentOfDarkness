@@ -71,15 +71,11 @@ public class AnimationAndMovementController : MonoBehaviour
         playerInput.CharacterControls.Use.canceled += onUse;
         playerInput.CharacterControls.Darkness.started += onDarkness;
         playerInput.CharacterControls.Darkness.canceled += onDarkness;
-
-        PlayerPrefs.SetInt("gems collected", 0);
-        PlayerPrefs.Save();
     }
     void start()
     {
         
     }
-
 
     // scripts for initializing inputs and controls
     void onRun(InputAction.CallbackContext context)
@@ -219,18 +215,23 @@ public class AnimationAndMovementController : MonoBehaviour
             teleportTipText.gameObject.SetActive(false);
         }
 
+        gems = PlayerPrefs.GetInt("gems") + PlayerPrefs.GetInt("new gems");
+        PlayerPrefs.SetInt("gems", gems);
+        PlayerPrefs.SetInt("new gems", 0);
         // collected time display and update
         if(oldTime != gems * 15/60)
         {
-            oldTime = PlayerPrefs.GetFloat("dark time");
-            TimeText.text = "Time collected: " + oldTime.ToString("R") + " minutes";
+            oldTime = PlayerPrefs.GetFloat("dark") + PlayerPrefs.GetFloat("new dark");
+            PlayerPrefs.SetFloat("new dark", 0);
+            PlayerPrefs.SetFloat("dark", oldTime);
+            TimeText.text = "time collected: " + oldTime.ToString() + " min";
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        gems = PlayerPrefs.GetInt("gems collected");
+        gems = PlayerPrefs.GetInt("gems");
         isGrounded = characterController.isGrounded;
         if(isGrounded && velocity.y < 0)
         {

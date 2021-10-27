@@ -74,6 +74,11 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
         playerInput.CharacterControls.Darkness.canceled += onDarkness;
     }
 
+    void start()
+    {
+        gemCount = PlayerPrefs.GetInt("gems");
+    }
+
 
     // scripts for initializing inputs and controls
     void onRun(InputAction.CallbackContext context)
@@ -254,8 +259,8 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
             countText.gameObject.SetActive(true);
             TimeCalculator();
             SetCountText();
-            PlayerPrefs.SetInt("gems collected", gemCount);
-            PlayerPrefs.Save();
+            PlayerPrefs.SetInt("new gems", gemCount);
+            //PlayerPrefs.Save();
         }
     }
 
@@ -272,7 +277,7 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
     {
         darknessTotalTime = 15 * gemCount;
         darknessTotalTime = darknessTotalTime / 60;
-        PlayerPrefs.SetFloat("dark time", darknessTotalTime);
+        PlayerPrefs.SetFloat("new dark", darknessTotalTime);
 
     }
 

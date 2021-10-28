@@ -1979,7 +1979,7 @@ GameObject:
   - component: {fileID: 1231918409}
   - component: {fileID: 1231918408}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: timeText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2024,7 +2024,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Time collected: 0 min'
+  m_text: 'Time collected: 0 secs'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8749,12 +8749,12 @@ PrefabInstance:
     - target: {fileID: 1381785913507776809, guid: 42d594b09a2202049b7fc921b8ce031d,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0071279984
+      value: 0.0071280524
       objectReference: {fileID: 0}
     - target: {fileID: 1381785913507776809, guid: 42d594b09a2202049b7fc921b8ce031d,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.0017081277
+      value: 0.0017081292
       objectReference: {fileID: 0}
     - target: {fileID: 1381785913507776809, guid: 42d594b09a2202049b7fc921b8ce031d,
         type: 3}
@@ -8849,12 +8849,12 @@ PrefabInstance:
     - target: {fileID: 9144730867114647960, guid: 42d594b09a2202049b7fc921b8ce031d,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0062778993
+      value: 0.0062779323
       objectReference: {fileID: 0}
     - target: {fileID: 9144730867114647960, guid: 42d594b09a2202049b7fc921b8ce031d,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.0037834025
+      value: -0.0037834225
       objectReference: {fileID: 0}
     - target: {fileID: 9144730867114647960, guid: 42d594b09a2202049b7fc921b8ce031d,
         type: 3}

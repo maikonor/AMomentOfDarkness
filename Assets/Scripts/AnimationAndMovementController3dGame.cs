@@ -48,8 +48,8 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
     public float darknessTotalTime;
     public int darknessMinutes;
     public int darknessSeconds;
-    public var gemX = 0;
-    public var gemZ = 0;
+    //public var gemX = 0;
+    //public var gemZ = 0;
     public TextMeshProUGUI countText;
     public GameObject teleportTipText;
 
@@ -258,9 +258,9 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
         }
         if (other.gameObject.CompareTag("GemPickUp")) 
         {
-            gemX = Random.Range(-10.0f, 10.0f); 
-            gemZ = Random.Range(-10.0f, 10.0f);
-            other.gameObject.Transform(new Vector3(gemX, -1.66 , gemZ));
+            //gemX = Random.Range(-10.0f, 10.0f); 
+            //gemZ = Random.Range(-10.0f, 10.0f);
+            //other.gameObject.Transform(new Vector3(gemX, -1.66 , gemZ));
             gemCount++;
             countText.gameObject.SetActive(true);
             TimeCalculator();

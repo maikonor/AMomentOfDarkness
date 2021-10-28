@@ -46,6 +46,10 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
 
     public int gemCount = 0;
     public float darknessTotalTime;
+    public int darknessMinutes;
+    public int darknessSeconds;
+    public var gemX = 0;
+    public var gemZ = 0;
     public TextMeshProUGUI countText;
     public GameObject teleportTipText;
 
@@ -254,7 +258,9 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
         }
         if (other.gameObject.CompareTag("GemPickUp")) 
         {
-            other.gameObject.SetActive(false);
+            gemX = Random.Range(-10.0f, 10.0f); 
+            gemZ = Random.Range(-10.0f, 10.0f);
+            other.gameObject.Transform(new Vector3(gemX, -1.66 , gemZ));
             gemCount++;
             countText.gameObject.SetActive(true);
             TimeCalculator();
@@ -276,13 +282,18 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
     void TimeCalculator()
     {
         darknessTotalTime = 15 * gemCount;
-        darknessTotalTime = darknessTotalTime / 60;
+        darknessSeconds = darknessSeconds + 15;
+        if (darknessSeconds == 60)
+        {
+            darknessSeconds = 0;
+            darknessMinutes ++;
+        }
         PlayerPrefs.SetFloat("new dark", darknessTotalTime);
 
     }
 
     void SetCountText()
 	{
-		countText.text = "Colected Gems: " + gemCount.ToString() + "\n" + "Collected Darkness time: " + darknessTotalTime.ToString();
+		countText.text = "Colected Gems: " + gemCount.ToString() + "\n" + "Available Darkness time: " + darknessMinutes.ToString() + ":" + darknessSeconds.ToString();
 	}
 }

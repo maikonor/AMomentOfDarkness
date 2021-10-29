@@ -48,15 +48,10 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
     public float darknessTotalTime;
     public int darknessMinutes;
     public int darknessSeconds;
-<<<<<<< HEAD
     public float gemX;
     public float gemZ;
     public Vector3 desiredPos;
     public float speed = 10;
-=======
-    //public var gemX = 0;
-    //public var gemZ = 0;
->>>>>>> refs/remotes/origin/master
     public TextMeshProUGUI countText;
     public GameObject teleportTipText;
     public Vector3 gemReset = new Vector3(0.0f , 0.0f , 0.0f);
@@ -267,19 +262,13 @@ public class AnimationAndMovementController3dGame : MonoBehaviour
         }
         if (other.gameObject.CompareTag("GemPickUp")) 
         {
-<<<<<<< HEAD
             other.gameObject.transform.position = Vector3.Lerp(transform.position, gemReset, Time.deltaTime * speed);
-            gemX = Random.Range(-5.0f, 280.0f); 
-            gemZ = Random.Range(-5.0f, 280.0f);
+            gemX = Random.Range(-5.0f, 230.0f); 
+            gemZ = Random.Range(-5.0f, 230.0f);
             desiredPos = new Vector3(gemX, 1.9f , gemZ);
             other.gameObject.transform.position = Vector3.Lerp(transform.position, desiredPos, Time.deltaTime * speed);
 
             
-=======
-            //gemX = Random.Range(-10.0f, 10.0f); 
-            //gemZ = Random.Range(-10.0f, 10.0f);
-            //other.gameObject.Transform(new Vector3(gemX, -1.66 , gemZ));
->>>>>>> refs/remotes/origin/master
             gemCount++;
             countText.gameObject.SetActive(true);
             TimeCalculator();

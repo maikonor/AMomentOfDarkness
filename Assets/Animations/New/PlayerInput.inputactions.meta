@@ -8,11 +8,7 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 8404be70184654265930450def6a9037, type: 3}
-<<<<<<< HEAD
-  generateWrapperCode: 0
-=======
   generateWrapperCode: 1
->>>>>>> 63987a7d116b1cd9f9c0b42b389c0d023c7d4e24
   wrapperCodePath: 
   wrapperClassName: 
   wrapperCodeNamespace: 
